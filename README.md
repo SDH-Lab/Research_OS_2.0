@@ -65,8 +65,5 @@ node scripts/demo-workflow.js
 
 The demo uses synthetic data in a temporary project.
 
-## Learn more
-
-[User guide (Chinese)](docs/user-guide/README.md) · [Task workflow](docs/action-workflow.md) · [Changing goals](docs/rebaseline.md)
 
 Research OS checks project records and workflow consistency. Scientific conclusions still need your judgment.
