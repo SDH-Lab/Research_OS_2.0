@@ -1,6 +1,4 @@
 # Research_OS_2.0
-Keep research goals, evidence, and next steps connected across sessions.
-
 **Keep your research connected and focused.**
 
 As a project grows, goals, experiments, and decisions get scattered across files and conversations. Research OS connects them so you and your agent can focus on what matters—and trace problems back to the files that explain them.
