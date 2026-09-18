@@ -1,0 +1,71 @@
+{
+  "$id": "project",
+  "allOf": [
+    { "$ref": "record-base" },
+    { "type": "object", "required": ["project_id", "title", "stage", "foreground_objective", "active_plan", "core_version", "modules", "resources", "approved_code_roots", "canonical_writing_sources", "forecast_settings"], "properties": {
+    "type": { "const": "project" },
+    "project_id": { "type": "string", "minLength": 1 },
+    "title": { "type": "string", "minLength": 1 },
+    "stage": { "type": "string", "minLength": 1 },
+    "status": { "type": "string", "minLength": 1 },
+    "foreground_objective": { "type": ["string", "null"] },
+    "active_plan": { "type": "string" },
+    "core_version": { "const": "2.0.0" },
+    "modules": { "type": "array", "items": { "type": "string" } },
+    "resources": {
+      "type": "object",
+      "propertyNames": { "pattern": "^[a-z][a-z0-9_-]*$" },
+      "additionalProperties": {
+        "type": "object",
+        "required": ["uri", "role", "access"],
+        "additionalProperties": false,
+        "properties": {
+          "uri": { "type": "string", "minLength": 1 },
+          "role": { "type": "string", "minLength": 1 },
+          "access": { "enum": ["read-only", "read-write"] },
+          "identity": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "approved_code_roots": { "type": "array", "items": { "type": "string", "pattern": "^[a-z][a-z0-9_-]*$" } },
+    "canonical_writing_sources": {
+      "type": "object",
+      "propertyNames": { "pattern": "^[a-z][a-z0-9_]*$" },
+      "additionalProperties": {
+        "type": "object",
+        "required": ["resource_ref", "source_identity", "content_identity"],
+        "additionalProperties": false,
+        "properties": {
+          "resource_ref": { "type": "string", "minLength": 1 },
+          "source_identity": { "type": "string", "minLength": 1 },
+          "content_identity": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "forecast_settings": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["as_of", "timezone", "integration_buffer", "default_weekly_capacity", "capacity_calendar"],
+      "properties": {
+        "as_of": { "type": "string", "format": "date" },
+        "timezone": { "type": "string", "minLength": 1 },
+        "integration_buffer": { "type": "number", "minimum": 0, "maximum": 1 },
+        "default_weekly_capacity": { "type": "number", "exclusiveMinimum": 0 },
+        "capacity_calendar": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["week_start", "available_units", "reason"],
+            "properties": {
+              "week_start": { "type": "string", "format": "date" },
+              "available_units": { "type": "number", "minimum": 0 },
+              "reason": { "type": "string", "minLength": 1 }
+            }
+          }
+        }
+      }
+    }
+    } }
+  ]
+}

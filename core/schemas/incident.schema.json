@@ -1,0 +1,7 @@
+{
+  "$id": "incident",
+  "allOf": [
+    { "$ref": "record-base" },
+    { "type": "object", "required": ["kind", "fact_or_risk", "evidence", "impact_scope", "root_cause_status", "remediation", "reverification", "guardrail_candidate"], "properties": { "type": { "enum": ["incident", "risk"] }, "kind": { "enum": ["incident", "risk"] }, "fact_or_risk": { "type": "string", "minLength": 1 }, "evidence": { "type": "array", "items": { "type": "string", "pattern": "^[A-Z]+-[0-9]{3,}$" } }, "impact_scope": { "type": "array" }, "root_cause_status": { "type": "string" }, "remediation": { "type": "array" }, "reverification": { "type": "string" }, "guardrail_candidate": { "type": "string" } } }
+  ]
+}

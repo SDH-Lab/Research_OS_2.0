@@ -1,0 +1,14 @@
+node_modules/
+.DS_Store
+coverage/
+.tmp/
+.superpowers/
+
+# Keep local projects, credentials and execution outputs out of this source repository.
+.env
+.env.*
+*.pem
+*.key
+local-vaults/
+meeting-demo*/
+*.log

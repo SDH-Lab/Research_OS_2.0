@@ -1,0 +1,7 @@
+{
+  "$id": "experiment",
+  "allOf": [
+    { "$ref": "record-base" },
+    { "type": "object", "required": ["scientific_question", "variables", "fixed_conditions", "data_model_boundary", "priors_and_bias", "forbidden_shortcuts", "outcome_definitions", "stopping_conditions", "acceptance"], "properties": { "type": { "const": "experiment" }, "scientific_question": { "type": "string" }, "variables": { "type": "array" }, "fixed_conditions": { "type": "array" }, "data_model_boundary": { "type": "string" }, "priors_and_bias": { "type": "array" }, "forbidden_shortcuts": { "type": "array" }, "outcome_definitions": { "type": "object" }, "stopping_conditions": { "type": "array" }, "acceptance": { "type": "string" } } }
+  ]
+}

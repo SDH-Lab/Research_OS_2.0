@@ -1,0 +1,314 @@
+{
+  "$id": "exec-plan",
+  "allOf": [
+    {
+      "$ref": "record-base"
+    },
+    {
+      "type": "object",
+      "required": [
+        "completion_conditions",
+        "scope",
+        "out_of_scope",
+        "risks",
+        "blockers",
+        "dependencies",
+        "background_register",
+        "writable_paths",
+        "resume_point",
+        "disruption_mode",
+        "latest_checkpoint"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Z]+-[0-9]{3,}$"
+        },
+        "type": {
+          "const": "exec_plan"
+        },
+        "status": {
+          "enum": [
+            "inbox",
+            "defined",
+            "ready",
+            "in_progress",
+            "review",
+            "verified",
+            "closed",
+            "reopened"
+          ]
+        },
+        "objective": false,
+        "created": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updated": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "completion_conditions": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "scope": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "out_of_scope": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "progress": false,
+        "current_step": false,
+        "findings": false,
+        "decisions": false,
+        "risks": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "blockers": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "dependencies": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "background_register": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/backgroundRegistration"
+          }
+        },
+        "validation": false,
+        "artifacts": false,
+        "writable_paths": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "resume_point": {
+          "$ref": "#/$defs/resumePoint"
+        },
+        "disruption_mode": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/$defs/disruptionMode"
+            }
+          ]
+        },
+        "latest_checkpoint": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^plans/logs/[a-zA-Z0-9.-]+\\.json$"
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "stringArray": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "resumePoint": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "last_verified_point",
+        "next_action",
+        "next_command_or_edit",
+        "required_files",
+        "risks",
+        "reforecast_trigger"
+      ],
+      "properties": {
+        "last_verified_point": {
+          "type": "string",
+          "minLength": 1
+        },
+        "next_action": {
+          "type": "string",
+          "minLength": 1
+        },
+        "next_command_or_edit": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "required_files": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "risks": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "reforecast_trigger": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "backgroundRegistration": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "kind",
+        "task_id",
+        "purpose",
+        "action_id",
+        "readable_paths",
+        "writable_paths",
+        "forbidden_changes",
+        "expected_artifacts",
+        "acceptance",
+        "owner",
+        "status",
+        "blockers",
+        "receiver",
+        "registered_at",
+        "updated_at",
+        "control_paths"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^BG-[0-9]{3,}$"
+        },
+        "kind": {
+          "enum": [
+            "session",
+            "experiment",
+            "subagent",
+            "audit",
+            "check"
+          ]
+        },
+        "task_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "purpose": {
+          "type": "string",
+          "minLength": 1
+        },
+        "action_id": {
+          "type": "string",
+          "pattern": "^[A-Z]+-[0-9]{3,}$"
+        },
+        "readable_paths": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "writable_paths": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "forbidden_changes": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "expected_artifacts": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "acceptance": {
+          "type": "string",
+          "minLength": 1
+        },
+        "owner": {
+          "type": "string",
+          "minLength": 1
+        },
+        "status": {
+          "enum": [
+            "registered",
+            "running",
+            "blocked",
+            "candidate_ready",
+            "accepted",
+            "closed",
+            "cancelled"
+          ]
+        },
+        "blockers": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "receiver": {
+          "type": "string",
+          "minLength": 1
+        },
+        "registered_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "control_paths": {
+          "$ref": "#/$defs/stringArray"
+        }
+      }
+    },
+    "disruptionMode": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "capacity_reduction",
+        "paused_actions",
+        "last_verified_point",
+        "next_action",
+        "next_command_or_edit",
+        "required_files",
+        "risks",
+        "reforecast_trigger"
+      ],
+      "properties": {
+        "status": {
+          "enum": [
+            "active",
+            "recovered"
+          ]
+        },
+        "capacity_reduction": {
+          "type": "string",
+          "minLength": 1
+        },
+        "paused_actions": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Z]+-[0-9]{3,}$"
+          }
+        },
+        "last_verified_point": {
+          "type": "string",
+          "minLength": 1
+        },
+        "next_action": {
+          "type": "string",
+          "minLength": 1
+        },
+        "next_command_or_edit": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "required_files": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "risks": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "reforecast_trigger": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    }
+  }
+}

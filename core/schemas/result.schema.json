@@ -1,0 +1,7 @@
+{
+  "$id": "result",
+  "allOf": [
+    { "$ref": "record-base" },
+    { "type": "object", "required": ["run", "protocol_checks", "numeric_checks", "classification", "adoption_reason", "limitations", "follow_up"], "properties": { "type": { "const": "result" }, "run": { "type": "string", "pattern": "^[A-Z]+-[0-9]{3,}$" }, "protocol_checks": { "type": "array" }, "numeric_checks": { "type": "array" }, "classification": { "enum": ["adopted", "excluded", "credible_negative", "uncertain", "invalid"] }, "adoption_reason": { "type": "string" }, "limitations": { "type": "array" }, "follow_up": { "type": "array", "items": { "type": "string", "pattern": "^[A-Z]+-[0-9]{3,}$" } } } }
+  ]
+}

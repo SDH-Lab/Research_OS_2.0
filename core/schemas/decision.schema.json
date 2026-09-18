@@ -1,0 +1,7 @@
+{
+  "$id": "decision",
+  "allOf": [
+    { "$ref": "record-base" },
+    { "type": "object", "required": ["question", "options", "selected_option", "rationale", "impact", "approver", "decision_date", "reopen_conditions"], "properties": { "type": { "const": "decision" }, "question": { "type": "string" }, "options": { "type": "array" }, "selected_option": { "type": "string" }, "rationale": { "type": "string" }, "impact": { "type": "array", "items": { "type": "string", "pattern": "^[A-Z]+-[0-9]{3,}$" } }, "approver": { "type": "string" }, "decision_date": { "type": "string", "format": "date-time" }, "reopen_conditions": { "type": "array" } } }
+  ]
+}

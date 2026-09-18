@@ -1,0 +1,7 @@
+{
+  "$id": "evidence",
+  "allOf": [
+    { "$ref": "record-base" },
+    { "type": "object", "required": ["sources", "figures_and_numbers", "interpretation", "counterevidence", "limitations", "supported_claims", "unsupported_claims", "writing_destinations"], "properties": { "type": { "const": "evidence" }, "sources": { "type": "array", "items": { "type": "string" } }, "figures_and_numbers": { "type": "array" }, "interpretation": { "type": "string" }, "counterevidence": { "type": "array", "items": { "type": "string", "pattern": "^[A-Z]+-[0-9]{3,}$" } }, "limitations": { "type": "array" }, "supported_claims": { "type": "array", "items": { "type": "string", "pattern": "^[A-Z]+-[0-9]{3,}$" } }, "unsupported_claims": { "type": "array" }, "writing_destinations": { "type": "array", "items": { "type": "string", "pattern": "^[A-Z]+-[0-9]{3,}$" } } } }
+  ]
+}

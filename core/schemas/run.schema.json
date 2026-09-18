@@ -1,0 +1,7 @@
+{
+  "$id": "run",
+  "allOf": [
+    { "$ref": "record-base" },
+    { "type": "object", "required": ["experiment", "manifest", "started_at", "ended_at", "run_status", "logs", "artifacts", "failure_details", "official"], "properties": { "type": { "const": "run" }, "experiment": { "type": "string", "pattern": "^[A-Z]+-[0-9]{3,}$" }, "manifest": { "type": "string", "pattern": "^[A-Z]+-[0-9]{3,}$" }, "started_at": { "type": "string", "format": "date-time" }, "ended_at": { "anyOf": [{ "type": "string", "format": "date-time" }, { "const": "pending" }] }, "run_status": { "type": "string" }, "logs": { "type": "array" }, "artifacts": { "type": "array" }, "failure_details": { "type": "string" }, "official": { "type": "boolean" } } }
+  ]
+}

@@ -1,0 +1,7 @@
+{
+  "$id": "claim",
+  "allOf": [
+    { "$ref": "record-base" },
+    { "type": "object", "required": ["statement", "evidence", "conditions", "prohibited_expansion", "confidence_and_limitations", "use_locations", "approval_status", "reopen_conditions"], "properties": { "type": { "const": "claim" }, "statement": { "type": "string" }, "evidence": { "type": "array", "items": { "type": "string", "pattern": "^[A-Z]+-[0-9]{3,}$" } }, "conditions": { "type": "array" }, "prohibited_expansion": { "type": "array" }, "confidence_and_limitations": { "type": "string" }, "use_locations": { "type": "array" }, "approval_status": { "type": "string" }, "reopen_conditions": { "type": "array" } } }
+  ]
+}

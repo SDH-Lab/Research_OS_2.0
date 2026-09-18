@@ -1,0 +1,36 @@
+{
+  "$id": "artifact",
+  "allOf": [
+    { "$ref": "record-base" },
+    {
+      "type": "object",
+      "required": ["producer_action", "file", "sha256", "acceptance"],
+      "properties": {
+        "type": { "const": "artifact" },
+        "producer_action": { "type": "string", "pattern": "^ACT-[0-9]{3,}$" },
+        "file": { "type": "string", "minLength": 1 },
+        "sha256": { "type": ["string", "null"], "pattern": "^[a-f0-9]{64}$" },
+        "acceptance": {
+          "anyOf": [
+            { "type": "null" },
+            {
+              "type": "object", "additionalProperties": false,
+              "required": ["actor", "at", "evidence"],
+              "properties": {
+                "actor": { "type": "string", "minLength": 1 },
+                "at": { "type": "string", "format": "date-time" },
+                "evidence": { "type": "string", "minLength": 1 }
+              }
+            }
+          ]
+        }
+      },
+      "allOf": [{
+        "if": { "properties": { "status": { "const": "closed" } }, "required": ["status"] },
+        "then": {
+          "properties": { "sha256": { "type": "string" }, "acceptance": { "type": "object" } }
+        }
+      }]
+    }
+  ]
+}

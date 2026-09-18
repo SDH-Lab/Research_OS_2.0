@@ -1,0 +1,114 @@
+{
+  "statuses": [
+    "inbox",
+    "defined",
+    "ready",
+    "in_progress",
+    "review",
+    "verified",
+    "closed",
+    "reopened"
+  ],
+  "transitions": {
+    "inbox": [
+      "defined"
+    ],
+    "defined": [
+      "ready"
+    ],
+    "ready": [
+      "in_progress"
+    ],
+    "in_progress": [
+      "review",
+      "closed"
+    ],
+    "review": [
+      "verified"
+    ],
+    "verified": [
+      "closed"
+    ],
+    "closed": [
+      "reopened"
+    ],
+    "reopened": [
+      "defined"
+    ]
+  },
+  "conditions": {
+    "in_progress->closed": {
+      "requires": [
+        "verified_at"
+      ]
+    },
+    "verified->closed": {
+      "requires": [
+        "verified_at"
+      ]
+    },
+    "closed->reopened": {
+      "requires": [
+        "reason",
+        "affected_ids"
+      ]
+    }
+  },
+  "action_transitions": {
+    "inbox": [
+      "defined",
+      "deferred",
+      "cancelled",
+      "superseded"
+    ],
+    "defined": [
+      "ready",
+      "deferred",
+      "cancelled",
+      "superseded"
+    ],
+    "ready": [
+      "in_progress",
+      "deferred",
+      "cancelled",
+      "superseded"
+    ],
+    "in_progress": [
+      "review",
+      "closed",
+      "deferred",
+      "cancelled",
+      "superseded"
+    ],
+    "review": [
+      "ready",
+      "verified",
+      "deferred",
+      "cancelled",
+      "superseded"
+    ],
+    "verified": [
+      "ready",
+      "closed",
+      "deferred",
+      "cancelled",
+      "superseded"
+    ],
+    "closed": [
+      "reopened"
+    ],
+    "reopened": [
+      "defined",
+      "deferred",
+      "cancelled",
+      "superseded"
+    ],
+    "deferred": [
+      "defined",
+      "cancelled",
+      "superseded"
+    ],
+    "cancelled": [],
+    "superseded": []
+  }
+}

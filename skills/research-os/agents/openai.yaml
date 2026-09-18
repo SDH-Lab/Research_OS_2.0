@@ -1,0 +1,4 @@
+interface:
+  display_name: "Research OS"
+  short_description: "Recover and operate a Research OS project safely"
+  default_prompt: "Use $research-os to recover the authoritative state of this Research OS project and continue the next safe action."

@@ -1,0 +1,35 @@
+{
+  "$id": "driver",
+  "allOf": [
+    { "$ref": "record-base" },
+    {
+      "type": "object",
+      "required": ["driver_kind", "source", "question", "importance", "scope", "priority", "closure_conditions", "actions"],
+      "properties": {
+        "type": { "const": "driver" },
+        "driver_kind": { "enum": ["research_question", "concern"] },
+        "source": { "type": "string" },
+        "source_comment_id": { "type": ["string", "null"] },
+        "source_ref": { "type": ["string", "null"] },
+        "question": { "type": "string" },
+        "importance": { "type": "string" },
+        "scope": { "type": "string" },
+        "priority": { "type": "string" },
+        "closure_conditions": { "type": "array" },
+        "actions": { "type": "array", "items": { "type": "string", "pattern": "^[A-Z]+-[0-9]{3,}$" } }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "driver_kind": { "const": "concern" } }, "required": ["driver_kind"] },
+          "then": {
+            "required": ["source_comment_id", "source_ref"],
+            "properties": {
+              "source_comment_id": { "type": "string", "minLength": 1, "pattern": "^[^\\r\\n\\u2028\\u2029\\u0000]+$" },
+              "source_ref": { "type": "string", "minLength": 1, "pattern": "^[^\\r\\n\\u2028\\u2029\\u0000]+$" }
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

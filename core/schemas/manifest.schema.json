@@ -1,0 +1,105 @@
+{
+  "$id": "manifest",
+  "allOf": [
+    { "$ref": "record-base" },
+    {
+      "type": "object",
+      "required": ["code_root", "resolved_code_root", "entrypoint", "commit", "resolved_config", "resolved_config_hash", "data_and_split", "model_and_checkpoint", "training_boundary", "optimizer_scheduler", "evaluator", "command", "environment", "output_location", "expected_artifacts", "normalized_hash", "resolved_at", "project_authority", "project_authority_hash", "resolved_outputs", "manifest_complete"],
+      "properties": {
+        "type": { "const": "manifest" },
+        "code_root": { "type": "string" },
+        "resolved_code_root": { "type": "object" },
+        "entrypoint": { "type": "string" },
+        "commit": { "type": "string" },
+        "resolved_config": { "type": "object" },
+        "resolved_config_hash": { "type": ["string", "null"] },
+        "data_and_split": { "type": "object" },
+        "model_and_checkpoint": { "type": "object" },
+        "training_boundary": { "type": "object" },
+        "optimizer_scheduler": { "type": "object" },
+        "evaluator": { "type": "object" },
+        "command": { "type": "string" },
+        "environment": { "type": "object" },
+        "output_location": { "type": "string" },
+        "expected_artifacts": { "type": "array", "items": { "type": "string" } },
+        "normalized_hash": { "type": ["string", "null"] },
+        "resolved_at": { "anyOf": [{ "type": "string", "format": "date-time" }, { "type": "null" }] },
+        "project_authority": { "type": ["object", "null"] },
+        "project_authority_hash": { "type": ["string", "null"] },
+        "resolved_outputs": { "type": ["object", "null"] },
+        "manifest_complete": { "type": "boolean" }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "status": { "enum": ["ready", "in_progress", "review", "verified", "closed", "reopened"] } }, "required": ["status"] },
+          "then": {
+            "properties": {
+              "code_root": { "type": "string", "minLength": 1 },
+              "resolved_code_root": { "type": "object", "required": ["resource", "uri"], "minProperties": 2 },
+              "entrypoint": { "type": "string", "minLength": 1 },
+              "commit": { "type": "string", "pattern": "^[a-fA-F0-9]{7,64}$" },
+              "resolved_config": { "type": "object", "minProperties": 1 },
+              "resolved_config_hash": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+              "data_and_split": { "type": "object", "required": ["dataset_root", "manifest", "split_function", "seed", "class_or_domain_order"] },
+              "model_and_checkpoint": { "type": "object", "required": ["model_class", "checkpoint"] },
+              "training_boundary": { "type": "object", "required": ["trainable_parameters", "loss", "sampler", "gradient_accumulation"] },
+              "optimizer_scheduler": {
+                "type": "object",
+                "required": ["optimizer", "scheduler", "checkpoint_selection", "early_stopping"],
+                "properties": {
+                  "optimizer": {
+                    "type": "object", "required": ["name", "parameters"],
+                    "properties": { "name": { "type": "string", "minLength": 1 }, "parameters": { "type": "object" } }
+                  },
+                  "scheduler": {
+                    "type": "object", "required": ["name", "parameters"],
+                    "properties": { "name": { "type": "string", "minLength": 1 }, "parameters": { "type": "object" } }
+                  },
+                  "checkpoint_selection": { "type": "string", "minLength": 1 },
+                  "early_stopping": {
+                    "type": "object", "required": ["mode", "monitor", "patience"],
+                    "properties": {
+                      "mode": { "enum": ["enabled", "disabled"] },
+                      "monitor": { "type": ["string", "null"] },
+                      "patience": { "type": ["integer", "null"], "minimum": 1 }
+                    }
+                  }
+                }
+              },
+              "evaluator": {
+                "type": "object", "required": ["implementation", "metrics", "aggregation", "state"],
+                "properties": {
+                  "implementation": { "type": "string", "minLength": 1 },
+                  "metrics": {
+                    "type": "array", "minItems": 1,
+                    "items": {
+                      "anyOf": [
+                        { "type": "string", "minLength": 1 },
+                        {
+                          "type": "object", "required": ["name", "definition"],
+                          "properties": { "name": { "type": "string", "minLength": 1 }, "definition": { "type": "string", "minLength": 1 } }
+                        }
+                      ]
+                    }
+                  },
+                  "aggregation": { "type": "string", "minLength": 1 },
+                  "state": { "type": "string", "minLength": 1 }
+                }
+              },
+              "command": { "type": "string", "minLength": 1 },
+              "environment": { "type": "object", "required": ["runtime", "packages", "hardware"] },
+              "output_location": { "type": "string", "pattern": "^[a-z][a-z0-9_-]*:[^\\\\?#]+$" },
+              "expected_artifacts": { "type": "array", "minItems": 1, "items": { "type": "string", "pattern": "^[a-z][a-z0-9_-]*:[^\\\\?#]+$" } },
+              "normalized_hash": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+              "resolved_at": { "type": "string", "format": "date-time" },
+              "project_authority": { "type": "object" },
+              "project_authority_hash": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+              "resolved_outputs": { "type": "object" },
+              "manifest_complete": { "const": true }
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

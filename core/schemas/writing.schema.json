@@ -1,0 +1,65 @@
+{
+  "$id": "writing",
+  "allOf": [
+    { "$ref": "record-base" },
+    {
+      "type": "object",
+      "required": ["writing_kind", "purpose", "claims", "target_location", "draft", "synchronization_status", "verification_result"],
+      "properties": {
+        "type": { "const": "writing" },
+        "writing_kind": { "enum": ["general", "internal_strategy", "response_block", "manuscript_change"] },
+        "purpose": { "type": "string" },
+        "claims": { "type": "array", "items": { "type": "string", "pattern": "^[A-Z]+-[0-9]{3,}$" } },
+        "target_location": { "type": "string" },
+        "draft": { "type": "string" },
+        "synchronization_status": { "type": "string" },
+        "verification_result": { "type": "string" },
+        "concern": { "type": "string", "pattern": "^[A-Z]+-[0-9]{3,}$" },
+        "direct_answer": { "type": "string", "minLength": 1, "pattern": "^[^\\r\\n\\u2028\\u2029\\u0000]+$" },
+        "evidence_or_reason": { "type": "array", "items": { "type": "string", "pattern": "^[A-Z]+-[0-9]{3,}$" } },
+        "limitations": { "type": "string", "minLength": 1 },
+        "manuscript_changes": { "type": "array", "items": { "type": "string", "pattern": "^[A-Z]+-[0-9]{3,}$" } },
+        "covered_actions": { "type": "array", "items": { "type": "string", "pattern": "^[A-Z]+-[0-9]{3,}$" } },
+        "target_source_keys": {
+          "type": "array", "minItems": 2, "maxItems": 2, "uniqueItems": true,
+          "items": { "enum": ["manuscript_clean", "manuscript_marked"] },
+          "allOf": [
+            { "contains": { "const": "manuscript_clean" }, "minContains": 1, "maxContains": 1 },
+            { "contains": { "const": "manuscript_marked" }, "minContains": 1, "maxContains": 1 }
+          ]
+        },
+        "source_identities": {
+          "type": "object", "required": ["manuscript_clean", "manuscript_marked"], "additionalProperties": false,
+          "properties": {
+            "manuscript_clean": { "type": "string", "minLength": 1, "pattern": "^[^\\r\\n\\u2028\\u2029\\u0000]+$" },
+            "manuscript_marked": { "type": "string", "minLength": 1, "pattern": "^[^\\r\\n\\u2028\\u2029\\u0000]+$" }
+          }
+        },
+        "location_anchor": { "type": "string", "minLength": 1 },
+        "change_summary": { "type": "string", "minLength": 1 },
+        "response_blocks": { "type": "array", "items": { "type": "string", "pattern": "^[A-Z]+-[0-9]{3,}$" } },
+        "numeric_sources": {
+          "type": "array",
+          "items": {
+            "type": "object", "required": ["literal", "evidence", "locator"], "additionalProperties": false,
+            "properties": {
+              "literal": { "type": "string", "minLength": 1, "pattern": "^[^\\r\\n\\u2028\\u2029\\u0000]+$" },
+              "evidence": { "type": "string", "pattern": "^[A-Z]+-[0-9]{3,}$" },
+              "locator": { "type": "string", "minLength": 1, "pattern": "^[^\\r\\n\\u2028\\u2029\\u0000]+$" }
+            }
+          }
+        }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "writing_kind": { "const": "response_block" } }, "required": ["writing_kind"] },
+          "then": { "required": ["concern", "direct_answer", "evidence_or_reason", "limitations", "manuscript_changes", "covered_actions", "numeric_sources"] }
+        },
+        {
+          "if": { "properties": { "writing_kind": { "const": "manuscript_change" } }, "required": ["writing_kind"] },
+          "then": { "required": ["target_source_keys", "source_identities", "location_anchor", "change_summary", "response_blocks", "numeric_sources"] }
+        }
+      ]
+    }
+  ]
+}
